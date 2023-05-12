@@ -25,3 +25,20 @@ model AuthToken {
   userId Int 
   @@index([userId])
 }
+
+model BlogPost {
+  id Int @id @default(autoincrement())
+  title String @db.Text
+  author String
+  publishedAt DateTime
+  imageUrl String
+  summary String @db.Text
+  content BlogPostContent?
+}
+
+model BlogPostContent {
+  blogPostId Int @id
+  content String @db.Text
+  product BlogPost @relation(fields: [blogPostId], references: [id])
+ @@index([blogPostId])
+}
