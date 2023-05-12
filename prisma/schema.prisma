@@ -23,7 +23,7 @@ model AuthToken {
   token String 
   user User @relation(fields: [userId], references: [id])
   userId Int 
-  @@index([userId])
+ @@index([userId])
 }
 
 model BlogPost {
@@ -39,6 +39,6 @@ model BlogPost {
 model BlogPostContent {
   blogPostId Int @id
   content String @db.Text
-  product BlogPost @relation(fields: [blogPostId], references: [id])
+  blogPost BlogPost @relation(fields: [blogPostId], references: [id])
  @@index([blogPostId])
 }
