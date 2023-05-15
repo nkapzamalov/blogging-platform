@@ -26,7 +26,7 @@ export default function BlogPostCard({ post }) {
               {post.author}
             </p>
           </div>
-          <Link href="#">
+          <Link href={`/article/${post.id}`}>
             <button
               type="button"
               className="rounded-2xl bg-indigo-600 px-4 py-2 text-xs text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"

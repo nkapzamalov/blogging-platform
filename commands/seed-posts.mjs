@@ -5,20 +5,20 @@ async function createBlogPosts(numPosts) {
 
   const prisma = prismaClient()
 
+  await deleteProducts()
+
   const blogPosts = []
 
   for (let i = 0; i < numPosts; i++) {
     const title = faker.lorem.words(8)
     const author = faker.person.firstName()
-    const publishedAt = faker.date.recent()
     const imageUrl = "https://placehold.co/150x150"
     const summary = faker.lorem.words(10)
-    const content = faker.lorem.paragraphs()
+    const content = faker.lorem.paragraphs(20)
 
     blogPosts.push({
       title,
       author,
-      publishedAt,
       imageUrl,
       summary,
       content: {
@@ -38,4 +38,12 @@ async function createBlogPosts(numPosts) {
   await prisma.$disconnect()
 }
 
-createBlogPosts(10)
+createBlogPosts(20)
+
+
+async function deleteProducts() {
+  await prisma.$transaction([
+    prisma.blogPostContent.deleteMany(),
+    prisma.blogPost.deleteMany()
+  ]);
+}

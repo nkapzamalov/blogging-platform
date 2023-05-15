@@ -31,6 +31,7 @@ model BlogPost {
   title String @db.Text
   author String
   publishedAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   imageUrl String
   summary String @db.Text
   content BlogPostContent?

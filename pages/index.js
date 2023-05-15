@@ -13,14 +13,13 @@ export default function Home({ posts }) {
 
 export async function getServerSideProps() {
   const prisma = prismaClient();
-  const posts = await prisma.blogPost.findMany({});
-  const serializedPosts = posts.map(post => ({
-    ...post,
-    publishedAt: post.publishedAt.toISOString(),
-  }));
+
+  let posts = await prisma.blogPost.findMany({});
+  posts = JSON.parse(JSON.stringify(posts))
+
   return {
     props: {
-      posts: serializedPosts,
+      posts,
     },
   };
 }
