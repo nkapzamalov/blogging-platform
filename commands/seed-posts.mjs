@@ -8,11 +8,11 @@ async function createBlogPosts(numPosts) {
   const blogPosts = []
 
   for (let i = 0; i < numPosts; i++) {
-    const title = faker.lorem.text()
+    const title = faker.lorem.words(8)
     const author = faker.person.firstName()
-    const publishedAt = faker.date.past()
+    const publishedAt = faker.date.recent()
     const imageUrl = "https://placehold.co/150x150"
-    const summary = faker.lorem.paragraph()
+    const summary = faker.lorem.words(10)
     const content = faker.lorem.paragraphs()
 
     blogPosts.push({

@@ -30,7 +30,7 @@ model BlogPost {
   id Int @id @default(autoincrement())
   title String @db.Text
   author String
-  publishedAt DateTime
+  publishedAt DateTime @default(now())
   imageUrl String
   summary String @db.Text
   content BlogPostContent?

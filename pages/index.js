@@ -1,11 +1,26 @@
 import Header from "../components/Header"
-import BlogPostCard from "../components/BlogPostCard"
+import BlogPostGrid from "../components/BlogPostGrid"
+import prismaClient from "../services/prisma.mjs";
 
-export default function Home() {
+export default function Home({ posts }) {
   return (
     <>
       <Header />
-      <BlogPostCard />
+      <BlogPostGrid posts={posts} />
     </>
   )
+}
+
+export async function getServerSideProps() {
+  const prisma = prismaClient();
+  const posts = await prisma.blogPost.findMany({});
+  const serializedPosts = posts.map(post => ({
+    ...post,
+    publishedAt: post.publishedAt.toISOString(),
+  }));
+  return {
+    props: {
+      posts: serializedPosts,
+    },
+  };
 }
