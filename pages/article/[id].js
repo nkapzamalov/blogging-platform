@@ -1,10 +1,10 @@
 import Article from "../../components/Article";
 
+
 export default function articlePage({ article }) {
 
-  return (
-    <Article article={article} />
-  )
+  return <Article article={article} />
+
 }
 
 export async function getServerSideProps({ query }) {
