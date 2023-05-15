@@ -3,8 +3,7 @@ import { Dialog } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline'
 import Link from 'next/link'
 
-
-export default function Example() {
+export default function Header({ isLoggedIn }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   return (
@@ -45,12 +44,21 @@ export default function Example() {
           <Link href="/" className="text-sm font-semibold leading-6 text-gray-900 hover:text-mypurple">
             Home
           </Link>
-          <Link href="#" className="text-sm font-semibold leading-6 text-gray-900 hover:text-mypurple">
-            Create Article
-          </Link>
-          <Link href="/login" className="text-sm font-semibold leading-6 text-gray-900 hover:text-mypurple">
-            Log in <span aria-hidden="true">&rarr;</span>
-          </Link>
+          {isLoggedIn === true && (
+            <Link href="/newPost" className="text-sm font-semibold leading-6 text-gray-900 hover:text-mypurple">
+              Create Article
+            </Link>
+          )}
+          {isLoggedIn === false && (
+            <Link href="/login" className="text-sm font-semibold leading-6 text-gray-900 hover:text-mypurple">
+              Log in <span aria-hidden="true">&rarr;</span>
+            </Link>
+          )}
+          {isLoggedIn === true && (
+            <Link href="/logout" className="text-sm font-semibold leading-6 text-gray-900 hover:text-mypurple">
+              Log out <span aria-hidden="true">&rarr;</span>
+            </Link>
+          )}
         </div>
       </nav>
       <Dialog as="div" className="lg:hidden" open={mobileMenuOpen} onClose={setMobileMenuOpen}>
@@ -75,8 +83,11 @@ export default function Example() {
                 <Link href="/" className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
                   Home
                 </Link>
-                <Link href="#" className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
-                  Create Article
+                <Link
+                  href="/login"
+                  className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+                >
+                  CreateArticle
                 </Link>
               </div>
               <div className="py-6">
