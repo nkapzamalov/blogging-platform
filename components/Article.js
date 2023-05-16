@@ -1,7 +1,11 @@
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import { format } from 'date-fns';
+import { enUS } from 'date-fns/locale';
 
 export default function Article({ article, isLoggedIn, handleDelete, handleEdit }) {
+  const publishedAt = format(new Date(article.blogPost.publishedAt), "EEE, MMM d yyyy h:mm a 'EST'", { locale: enUS });
+  const updatedAt = format(new Date(article.blogPost.updatedAt), "EEE, MMM d yyyy h:mm a 'EST'", { locale: enUS });
 
   return (
     <>
@@ -21,7 +25,7 @@ export default function Article({ article, isLoggedIn, handleDelete, handleEdit 
           <h1 className="mt-9 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">{article.blogPost.title}</h1>
           <div className="mt-10 max-w-2xl">
             <p className="font-medium text-base text-mygray">
-              PUBLISHED {article.blogPost.publishedAt} | UPDATED {article.blogPost.updatedAt}
+              PUBLISHED {publishedAt} | UPDATED {updatedAt}
             </p>
             <p className="font-light text-lg text-black mt-10">
               {article.content}

@@ -1,6 +1,14 @@
 import Link from "next/link"
+import { formatDistanceToNowStrict } from 'date-fns';
+import { enUS } from 'date-fns/locale';
 
 export default function BlogPostCard({ post }) {
+
+  const timeAgo = formatDistanceToNowStrict(new Date(post.updatedAt), { addSuffix: true }, { locale: enUS })
+    .replace('minutes', 'm')
+    .replace('hours', 'h')
+    .replace('days', 'd')
+    .replace('seconds', 's');
 
   return (
     <div className="flex flex-col md:flex-row md:space-x-5 space-y-3 md:space-y-0 rounded-xl p-3 max-w-xs md:max-w-xl mx-auto border border-white bg-white">
@@ -12,7 +20,7 @@ export default function BlogPostCard({ post }) {
           <p className="line-clamp-2 capitalize font-semibold text-sm ml-1">
             {post.title}
           </p>
-          <p className="text-gray-500 font-medium hidden md:block">12h</p>
+          <p className="text-gray-500 font-medium text-xs hidden md:block">{timeAgo}</p>
         </div>
         <p className="line-clamp-2 md:text-sm text-gray-500 w-60">{post.summary}</p>
         <div className="flex justify-between">
