@@ -1,10 +1,16 @@
-import Header from "../components/Header"
+import Header from "../components/Header";
 import Footer from "../components/Footer";
 
-export default function Article({ article }) {
+export default function Article({ article, isLoggedIn, handleDelete }) {
+
+  const handleEdit = () => {
+    // Handle edit functionality here
+    // This function should navigate the user to the edit page or show an edit form
+  };
+
   return (
     <>
-      <Header />
+      <Header isLoggedIn={isLoggedIn} />
       <div className="px-6 py-32 lg:px-8 mt-20">
         <div className="mx-auto max-w-3xl text-base leading-7 text-gray-700">
           <div className="flex items-center gap-x-2 md:gap-x-4">
@@ -25,11 +31,26 @@ export default function Article({ article }) {
             <p className="font-light text-lg text-black mt-10">
               {article.content}
             </p>
+            {isLoggedIn && (
+              <div className="flex space-x-4 mt-6">
+                <button
+                  className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
+                  onClick={handleEdit}
+                >
+                  Edit
+                </button>
+                <button
+                  className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded"
+                  onClick={handleDelete}
+                >
+                  Delete
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>
       <Footer />
     </>
-  )
+  );
 }
-
