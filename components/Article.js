@@ -1,6 +1,5 @@
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import Router from "next/router";
 
 export default function Article({ article, isLoggedIn, handleDelete, handleEdit }) {
 
@@ -19,7 +18,7 @@ export default function Article({ article, isLoggedIn, handleDelete, handleEdit 
               {article.blogPost.author}
             </p>
           </div>
-          <h1 className="mt-9 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">{article.title}</h1>
+          <h1 className="mt-9 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">{article.blogPost.title}</h1>
           <div className="mt-10 max-w-2xl">
             <p className="font-medium text-base text-mygray">
               PUBLISHED {article.blogPost.publishedAt} | UPDATED {article.blogPost.updatedAt}

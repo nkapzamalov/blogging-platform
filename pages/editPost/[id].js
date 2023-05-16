@@ -1,9 +1,14 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { meResponse } from '../../calls/meEndpoint';
 import Router from 'next/router.js';
 import prismaClient from '../../services/prisma.mjs';
+import Header from '../../components/Header.js';
+import Footer from '../../components/Footer.js';
+import EditForm from '../../components/EditForm';
 
 export default function EditPostPage({ post }) {
 
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [title, setTitle] = useState(post.title);
   const [author, setAuthor] = useState(post.author);
   const [content, setContent] = useState(post.content.content);
@@ -11,10 +16,19 @@ export default function EditPostPage({ post }) {
   const [imageUrl, setImageUrl] = useState(post.imageUrl);
   const [error, setError] = useState("");
 
+  useEffect(() => {
+    async function getResponse() {
+      const res = await meResponse();
+      if (res.status == 200) {
+        setIsLoggedIn(true);
+      }
+
+    }
+    getResponse();
+  }, [])
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-
     try {
       const response = await fetch(`/api/editPost?id=${post.id}`, {
         method: 'PUT',
@@ -43,73 +57,46 @@ export default function EditPostPage({ post }) {
     }
   };
 
+
+  const handleTitleChange = (e) => {
+    setTitle(e.target.value);
+  };
+
+  const handleAuthorChange = (e) => {
+    setAuthor(e.target.value);
+  };
+
+  const handleContentChange = (e) => {
+    setContent(e.target.value);
+  };
+
+  const handleSummaryChange = (e) => {
+    setSummary(e.target.value);
+  };
+
+  const handleImageUrlChange = (e) => {
+    setImageUrl(e.target.value);
+  };
+
   return (
-    <div className="max-w-3xl mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-4">Edit Post</h1>
-      {error && (
-        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-2 rounded mb-4">
-          {error}
-        </div>
-      )}
-      <form onSubmit={handleFormSubmit}>
-        <div className="mb-4">
-          <label htmlFor="title" className="block font-medium text-gray-700">Title</label>
-          <input
-            type="text"
-            id="title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            className="mt-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 block w-full"
-          />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="author" className="block font-medium text-gray-700">Author</label>
-          <input
-            type="text"
-            id="author"
-            value={author}
-            onChange={(e) => setAuthor(e.target.value)}
-            className="mt-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 block w-full"
-          />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="summary" className="block font-medium text-gray-700">Summary</label>
-          <textarea
-            id="summary"
-            value={summary}
-            onChange={(e) => setSummary(e.target.value)}
-            className="mt-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 block w-full h-40 resize-none"
-          ></textarea>
-        </div>
-        <div className="mb-4">
-          <label htmlFor="content" className="block font-medium text-gray-700">Content</label>
-          <textarea
-            id="content"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            className="mt-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 block w-full h-40 resize-none"
-          ></textarea>
-        </div>
-        <div className="mb-4">
-          <label htmlFor="imageUrl" className="block font-medium text-gray-700">Image URL</label>
-          <input
-            type="text"
-            id="imageUrl"
-            value={imageUrl}
-            onChange={(e) => setImageUrl(e.target.value)}
-            className="mt-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 block w-full"
-          />
-        </div>
-        <div className="flex justify-end">
-          <button
-            type="submit"
-            className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
-          >
-            Update Post
-          </button>
-        </div>
-      </form>
-    </div>
+    <>
+      <Header isLoggedIn={isLoggedIn} />
+      <EditForm
+        title={title}
+        author={author}
+        content={content}
+        summary={summary}
+        imageUrl={imageUrl}
+        error={error}
+        handleFormSubmit={handleFormSubmit}
+        handleTitleChange={handleTitleChange}
+        handleAuthorChange={handleAuthorChange}
+        handleContentChange={handleContentChange}
+        handleSummaryChange={handleSummaryChange}
+        handleImageUrlChange={handleImageUrlChange}
+      />
+      <Footer />
+    </>
   );
 }
 

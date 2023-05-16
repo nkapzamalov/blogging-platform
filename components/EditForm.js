@@ -1,0 +1,73 @@
+export default function EditForm({
+  title, author, content, summary, imageUrl, error,
+  handleFormSubmit, handleTitleChange, handleAuthorChange, handleContentChange, handleSummaryChange, handleImageUrlChange }) {
+
+  return (
+    <div className="max-w-3xl mx-auto px-4 py-8">
+      <h1 className="text-3xl font-bold mb-4">Edit Post</h1>
+      {error && (
+        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-2 rounded mb-4">
+          {error}
+        </div>
+      )}
+      <form onSubmit={handleFormSubmit}>
+        <div className="mb-4">
+          <label htmlFor="title" className="block font-medium text-gray-700">Title</label>
+          <input
+            type="text"
+            id="title"
+            value={title}
+            onChange={handleTitleChange}
+            className="mt-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 block w-full"
+          />
+        </div>
+        <div className="mb-4">
+          <label htmlFor="author" className="block font-medium text-gray-700">Author</label>
+          <input
+            type="text"
+            id="author"
+            value={author}
+            onChange={handleAuthorChange}
+            className="mt-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 block w-full"
+          />
+        </div>
+        <div className="mb-4">
+          <label htmlFor="summary" className="block font-medium text-gray-700">Summary</label>
+          <textarea
+            id="summary"
+            value={summary}
+            onChange={handleSummaryChange}
+            className="mt-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 block w-full h-40 resize-none"
+          ></textarea>
+        </div>
+        <div className="mb-4">
+          <label htmlFor="content" className="block font-medium text-gray-700">Content</label>
+          <textarea
+            id="content"
+            value={content}
+            onChange={handleContentChange}
+            className="mt-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 block w-full h-40 resize-none"
+          ></textarea>
+        </div>
+        <div className="mb-4">
+          <label htmlFor="imageUrl" className="block font-medium text-gray-700">Image URL</label>
+          <input
+            type="text"
+            id="imageUrl"
+            value={imageUrl}
+            onChange={handleImageUrlChange}
+            className="mt-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 block w-full"
+          />
+        </div>
+        <div className="flex justify-end">
+          <button
+            type="submit"
+            className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
+          >
+            Update Post
+          </button>
+        </div>
+      </form>
+    </div>
+  );
+}
