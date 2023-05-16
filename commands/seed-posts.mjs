@@ -38,7 +38,7 @@ async function createBlogPosts(numPosts) {
   await prisma.$disconnect()
 }
 
-createBlogPosts(10)
+createBlogPosts(500)
 
 
 async function deleteProducts() {

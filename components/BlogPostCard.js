@@ -1,14 +1,22 @@
 import Link from "next/link"
 import { formatDistanceToNowStrict } from 'date-fns';
 import { enUS } from 'date-fns/locale';
+import { useState, useEffect } from "react";
 
 export default function BlogPostCard({ post }) {
+  const [timeAgo, setTimeAgo] = useState('');
 
-  const timeAgo = formatDistanceToNowStrict(new Date(post.updatedAt), { addSuffix: true }, { locale: enUS })
-    .replace('minutes', 'm')
-    .replace('hours', 'h')
-    .replace('days', 'd')
-    .replace('seconds', 's');
+  useEffect(() => {
+    const time = formatDistanceToNowStrict(new Date(post.updatedAt), {
+      addSuffix: true,
+      locale: enUS,
+    })
+      .replace('minutes', 'm')
+      .replace('hours', 'h')
+      .replace('days', 'd')
+      .replace('seconds', 's');
+    setTimeAgo(time);
+  }, [post.updatedAt]);
 
   return (
     <div className="flex flex-col md:flex-row md:space-x-5 space-y-3 md:space-y-0 rounded-xl p-3 max-w-xs md:max-w-xl mx-auto border border-white bg-white">
