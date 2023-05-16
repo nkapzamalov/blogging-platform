@@ -8,6 +8,10 @@ import { useState, useEffect } from "react";
 export default function Home({ posts, totalPages, currentPage }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+  }
+
   useEffect(() => {
     async function getResponse() {
       const res = await meResponse();
@@ -19,7 +23,7 @@ export default function Home({ posts, totalPages, currentPage }) {
     getResponse();
   }, []);
 
-  return <BlogPostGrid posts={posts} totalPages={totalPages} currentPage={currentPage} isLoggedIn={isLoggedIn} />
+  return <BlogPostGrid posts={posts} totalPages={totalPages} currentPage={currentPage} isLoggedIn={isLoggedIn} handleLogout={handleLogout} />
 }
 
 

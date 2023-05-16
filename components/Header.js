@@ -1,7 +1,9 @@
 import { useState } from 'react'
 import { Dialog } from '@headlessui/react'
-import { Bars3Icon, XMarkIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline'
+import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import Link from 'next/link'
+
+
 
 export default function Header({ isLoggedIn }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -12,24 +14,6 @@ export default function Header({ isLoggedIn }) {
         <Link href="/" className="-m-1.5 p-1.5 uppercase font-bold text-2xl leading-6 text-gray-900">
           rise<span className='text-mypurple'>blog</span>
         </Link>
-        <div className="w-full max-w-lg lg:max-w-xs">
-          <label htmlFor="search" className="sr-only">
-            Search
-          </label>
-          <div className="relative">
-            <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-              <MagnifyingGlassIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
-            </div>
-            <input
-              id="search"
-              name="search"
-              className="block bg-gray-100 w-full rounded-md py-1.5 pl-10 pr-3 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-mypurple sm:text-sm sm:leading-6"
-              placeholder="Search"
-              type="search"
-
-            />
-          </div>
-        </div>
         <div className="flex lg:hidden">
           <button
             type="button"

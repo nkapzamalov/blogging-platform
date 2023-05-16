@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import NewPostForm from "../components/NewPostForm";
+import Router from "next/router";
 
 
 export default function NewPost() {
@@ -15,7 +16,7 @@ export default function NewPost() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("/api/posts", {
+      const response = await fetch("/api/createPost", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -33,10 +34,10 @@ export default function NewPost() {
       if (!response.ok) {
         throw new Error(data.message);
       }
-
       setError("");
+      Router.push("/")
     } catch (err) {
-      setError(`Error creating blog post: ${err.message}`);
+      setError(`${err.message}`);
     }
   };
 

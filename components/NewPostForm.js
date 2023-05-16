@@ -7,7 +7,11 @@ export default function NewPostForm({
   return (
     <div className="flex flex-col items-center justify-center mt-20">
       <h1 className="text-2xl font-bold mb-6">Create New Post</h1>
-      <h2>{error}</h2>
+      {error && (
+        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-2 rounded mb-4">
+          {error}
+        </div>
+      )}
       <form className="w-full max-w-lg" onSubmit={handleSubmit}>
         <div className="flex flex-wrap -mx-3 mb-6">
           <div className="w-full px-3">
@@ -50,7 +54,7 @@ export default function NewPostForm({
           </div>
         </div>
         <div className="flex items-center justify-center">
-          <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
+          <button className="bg-mypurple text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
             Create Post
           </button>
         </div>
