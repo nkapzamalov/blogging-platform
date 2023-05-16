@@ -24,6 +24,11 @@ export default function articlePage({ article }) {
     }
   };
 
+  const handleEdit = () => {
+    const editPageUrl = `/editPost/${article.blogPostId}`;
+    Router.push(editPageUrl);
+  };
+
   useEffect(() => {
     async function getResponse() {
       const res = await meResponse();
@@ -35,7 +40,7 @@ export default function articlePage({ article }) {
     getResponse();
   }, []);
 
-  return <Article article={article} isLoggedIn={isLoggedIn} handleDelete={handleDelete} />
+  return <Article article={article} isLoggedIn={isLoggedIn} handleDelete={handleDelete} handleEdit={handleEdit} />
 }
 
 export async function getServerSideProps({ query }) {
