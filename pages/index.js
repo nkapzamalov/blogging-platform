@@ -1,11 +1,10 @@
-
 import BlogPostGrid from "../components/BlogPostGrid"
 import prismaClient from "../services/prisma.mjs";
 import { meResponse } from "../calls/meEndpoint";
 import { useState, useEffect } from "react";
 
 
-export default function Home({ posts, totalPages, currentPage }) {
+export default function Home({ initialPosts, initialCursor, pages }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const handleLogout = () => {
@@ -23,31 +22,31 @@ export default function Home({ posts, totalPages, currentPage }) {
     getResponse();
   }, []);
 
-  return <BlogPostGrid posts={posts} totalPages={totalPages} currentPage={currentPage} isLoggedIn={isLoggedIn} handleLogout={handleLogout} />
+  return <BlogPostGrid initialPosts={initialPosts} initialCursor={initialCursor} isLoggedIn={isLoggedIn} handleLogout={handleLogout} pages={pages} />
 }
 
-
-
-export async function getServerSideProps(context) {
+export async function getServerSideProps() {
   const prisma = prismaClient();
-  const page = parseInt(context.query.page) || 1;
-  const itemsPerPage = 10;
-  const start = (page - 1) * itemsPerPage;
+  const take = 10;
+  const totalPosts = await prisma.blogPost.count();
+  const pages = Math.ceil(totalPosts / 10)
 
-  let posts = await prisma.blogPost.findMany({
-    skip: start,
-    take: itemsPerPage,
+  let initialPosts = await prisma.blogPost.findMany({
+    take,
+    orderBy: {
+      id: 'asc',
+    },
   });
-  posts = JSON.parse(JSON.stringify(posts))
+  initialPosts = JSON.parse(JSON.stringify(initialPosts))
 
-  const totalCount = await prisma.blogPost.count();
-  const totalPages = Math.ceil(totalCount / itemsPerPage);
+  const lastPostInResults = initialPosts[take - 1]
+  const initialCursor = lastPostInResults.id
 
   return {
     props: {
-      posts,
-      totalPages,
-      currentPage: page,
+      initialPosts,
+      initialCursor,
+      pages
     },
   };
 }
