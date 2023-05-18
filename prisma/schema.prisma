@@ -14,32 +14,36 @@ datasource db {
 model User {
   id Int @id @default(autoincrement())
   email String @unique
+  username String @unique
   password String
   token AuthToken[]
+  blogPosts BlogPost[]
 }
 
 model AuthToken {
   id Int @id @default(autoincrement())
-  token String 
+  token String
   user User @relation(fields: [userId], references: [id])
-  userId Int 
- @@index([userId])
+  userId Int
+  @@index([userId])
 }
 
 model BlogPost {
-  id Int @id @default(autoincrement())
+  id Int  @id @default(autoincrement())
   title String @db.Text
-  author String
   publishedAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   imageUrl String
   summary String @db.Text
   content BlogPostContent?
+  userId Int
+  user User @relation(fields: [userId], references: [id])
+  @@index([userId])
 }
 
 model BlogPostContent {
-  blogPostId Int @id
+  blogPostId Int  @id
   content String @db.Text
-  blogPost BlogPost @relation(fields: [blogPostId], references: [id])
- @@index([blogPostId])
+  blogPost BlogPost  @relation(fields: [blogPostId], references: [id])
+  @@index([blogPostId])
 }

@@ -1,9 +1,8 @@
 import BlogPostGrid from "../components/BlogPostGrid"
 import prismaClient from "../services/prisma.mjs";
-import { useState, useEffect } from "react";
 
 
-export default function Home({ initialPosts, initialCursor, pages }) {
+export default function Home({ initialPosts, initialCursor }) {
 
   return <BlogPostGrid initialPosts={initialPosts} initialCursor={initialCursor} />
 }
@@ -17,6 +16,9 @@ export async function getServerSideProps() {
     orderBy: {
       id: 'asc',
     },
+    include: {
+      user: true
+    }
   });
   initialPosts = JSON.parse(JSON.stringify(initialPosts))
 

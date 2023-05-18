@@ -7,8 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "createUser": "node -r dotenv/config commands/create-user.mjs dotenv_config_path=.env",
-    "seedPosts": "node -r dotenv/config commands/seed-posts.mjs dotenv_config_path=.env.local"
+    "seedData": "node -r dotenv/config commands/seed-data.mjs dotenv_config_path=.env.local"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.14",

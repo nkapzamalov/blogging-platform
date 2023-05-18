@@ -3,7 +3,7 @@ import Footer from "../components/Footer";
 import { format } from 'date-fns';
 import { enUS } from 'date-fns/locale';
 
-export default function Article({ article, handleDelete, handleEdit }) {
+export default function Article({ article, author, error, handleDelete, handleEdit }) {
   const publishedAt = format(new Date(article.blogPost.publishedAt), "EEE, MMM d yyyy h:mm a 'EST'", { locale: enUS });
   const updatedAt = format(new Date(article.blogPost.updatedAt), "EEE, MMM d yyyy h:mm a 'EST'", { locale: enUS });
 
@@ -19,8 +19,13 @@ export default function Article({ article, handleDelete, handleEdit }) {
               </svg>
             </span>
             <p className="text-sm font-medium text-gray-800">
-              {article.blogPost.author}
+              {author.username}
             </p>
+            {error && (
+              <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-2 rounded mb-4">
+                {error}
+              </div>
+            )}
           </div>
           <h1 className="mt-9 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">{article.blogPost.title}</h1>
           <div className="mt-10 max-w-2xl">
@@ -32,13 +37,13 @@ export default function Article({ article, handleDelete, handleEdit }) {
             </p>
             <div className="flex space-x-4 mt-6">
               <button
-                className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
+                className="bg-mypurple  text-white px-4 py-2 rounded focus:outline-none focus:ring-2 "
                 onClick={handleEdit}
               >
                 Edit
               </button>
               <button
-                className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded"
+                className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-red-500"
                 onClick={handleDelete}
               >
                 Delete

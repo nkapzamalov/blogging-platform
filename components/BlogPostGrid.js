@@ -10,6 +10,7 @@ export default function BlogPostGrid({ initialPosts, initialCursor, pages }) {
   const [cursor, setCursor] = useState(initialCursor);
 
   const handleNextPage = async (e) => {
+
     e.preventDefault();
     try {
       const response = await fetch(`/api/pagination?cursor=${cursor}&take=10`, {

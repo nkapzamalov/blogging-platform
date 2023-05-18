@@ -8,7 +8,6 @@ import AuthContext from '../context/AuthContext';
 
 export default function NewPost() {
   const [title, setTitle] = useState("");
-  const [author, setAuthor] = useState("");
   const [content, setContent] = useState("");
   const [summary, setSummary] = useState("");
   const [imageUrl, setImageUrl] = useState("");
@@ -32,7 +31,6 @@ export default function NewPost() {
       },
       body: JSON.stringify({
         title,
-        author,
         content,
         summary,
         imageUrl,
@@ -60,10 +58,6 @@ export default function NewPost() {
     setTitle(e.target.value);
   };
 
-  const handleAuthorChange = (e) => {
-    setAuthor(e.target.value);
-  };
-
   const handleContentChange = (e) => {
     setContent(e.target.value);
   };
@@ -81,14 +75,12 @@ export default function NewPost() {
       <Header />
       <NewPostForm
         title={title}
-        author={author}
         content={content}
         summary={summary}
         imageUrl={imageUrl}
         error={error}
         handleSubmit={handleSubmit}
         handleTitleChange={handleTitleChange}
-        handleAuthorChange={handleAuthorChange}
         handleContentChange={handleContentChange}
         handleSummaryChange={handleSummaryChange}
         handleImageUrlChange={handleImageUrlChange}

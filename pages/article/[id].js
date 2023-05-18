@@ -1,10 +1,11 @@
 import Article from "../../components/Article";
 import prismaClient from "../../services/prisma.mjs";
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import Router from "next/router";
 import AuthContext from '../../context/AuthContext';
 
-export default function articlePage({ article }) {
+export default function articlePage({ article, author }) {
+  const [error, setError] = useState("");
 
   const { auth } = useContext(AuthContext);
 
@@ -26,11 +27,15 @@ export default function articlePage({ article }) {
       }
       const response = await fetch(`/api/deletePost?id=${article.blogPostId}`, options);
 
+      const data = await response.json()
+
       if (response.status == 200) {
         return Router.push('/');
       }
+      throw new Error(data.message);
+
     } catch (error) {
-      console.error(error);
+      setError(error.message)
     }
   };
 
@@ -42,7 +47,7 @@ export default function articlePage({ article }) {
     Router.push(editPageUrl);
   };
 
-  return <Article article={article} handleDelete={handleDelete} handleEdit={handleEdit} />
+  return <Article article={article} author={author} error={error} handleDelete={handleDelete} handleEdit={handleEdit} />
 }
 
 export async function getServerSideProps({ query }) {
@@ -54,21 +59,21 @@ export async function getServerSideProps({ query }) {
     return { notFound: true };
   }
 
+
   let article = await prisma.blogPostContent.findFirst({
     where: {
       blogPostId: Number(id),
     },
     include: {
-      blogPost: {
-        select: {
-          title: true,
-          author: true,
-          publishedAt: true,
-          updatedAt: true,
-        }
-      }
+      blogPost: true
     },
-  });
+  })
+
+  const author = await prisma.user.findFirst({
+    where: {
+      id: Number(article.blogPost.userId)
+    }
+  })
 
   article = JSON.parse(JSON.stringify(article))
 
@@ -79,6 +84,7 @@ export async function getServerSideProps({ query }) {
   return {
     props: {
       article,
+      author
     },
   };
 }

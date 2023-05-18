@@ -1,6 +1,6 @@
 export default function EditForm({
-  title, author, content, summary, imageUrl, error,
-  handleFormSubmit, handleTitleChange, handleAuthorChange, handleContentChange, handleSummaryChange, handleImageUrlChange }) {
+  title, content, summary, imageUrl, error,
+  handleFormSubmit, handleTitleChange, handleContentChange, handleSummaryChange, handleImageUrlChange }) {
 
   return (
     <div className="max-w-3xl mx-auto px-4 py-8">
@@ -18,16 +18,6 @@ export default function EditForm({
             id="title"
             value={title}
             onChange={handleTitleChange}
-            className="mt-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 block w-full"
-          />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="author" className="block font-medium text-gray-700">Author</label>
-          <input
-            type="text"
-            id="author"
-            value={author}
-            onChange={handleAuthorChange}
             className="mt-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 block w-full"
           />
         </div>

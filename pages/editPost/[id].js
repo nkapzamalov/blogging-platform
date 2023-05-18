@@ -9,7 +9,6 @@ import AuthContext from '../../context/AuthContext.js';
 export default function EditPostPage({ post }) {
 
   const [title, setTitle] = useState(post.title);
-  const [author, setAuthor] = useState(post.author);
   const [content, setContent] = useState(post.content.content);
   const [summary, setSummary] = useState(post.summary);
   const [imageUrl, setImageUrl] = useState(post.imageUrl);
@@ -32,7 +31,6 @@ export default function EditPostPage({ post }) {
       },
       body: JSON.stringify({
         title,
-        author,
         content,
         summary,
         imageUrl,
@@ -55,17 +53,13 @@ export default function EditPostPage({ post }) {
       Router.push(`/article/${post.id}`);
 
     } catch (err) {
-      setError(`${err.message}`);
+      setError(err.message);
     }
   };
 
 
   const handleTitleChange = (e) => {
     setTitle(e.target.value);
-  };
-
-  const handleAuthorChange = (e) => {
-    setAuthor(e.target.value);
   };
 
   const handleContentChange = (e) => {
@@ -85,14 +79,12 @@ export default function EditPostPage({ post }) {
       <Header />
       <EditForm
         title={title}
-        author={author}
         content={content}
         summary={summary}
         imageUrl={imageUrl}
         error={error}
         handleFormSubmit={handleFormSubmit}
         handleTitleChange={handleTitleChange}
-        handleAuthorChange={handleAuthorChange}
         handleContentChange={handleContentChange}
         handleSummaryChange={handleSummaryChange}
         handleImageUrlChange={handleImageUrlChange}

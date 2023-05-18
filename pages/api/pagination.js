@@ -12,6 +12,9 @@ export default async function handler(req, res) {
     cursor: {
       id: Number(cursor)
     },
+    include: {
+      user: true
+    },
   });
 
   const totalPages = Math.ceil(totalPosts / Number(take));

@@ -1,7 +1,7 @@
 import prismaClient from "../../services/prisma.mjs";
 
 export default async function handler(req, res) {
-  const prisma = prismaClient()
+  const prisma = prismaClient();
 
   if (req.method !== 'PUT') {
     return res.status(405).json({ error: 'Method not allowed' });
@@ -17,19 +17,12 @@ export default async function handler(req, res) {
     },
   });
 
-  if (user == null) {
+  if (!user) {
     return res.status(403).send({ message: "Forbidden" });
   }
 
   const postId = parseInt(req.query.id);
-  const { title, author, content, imageUrl, summary } = req.body;
-
-  if (!/^[a-zA-Z\s]+$/.test(author)) {
-    res
-      .status(400)
-      .json({ message: "Author can only contain letters and spaces" });
-    return;
-  }
+  const { title, content, imageUrl, summary } = req.body;
 
   if (/^\d+$/.test(title)) {
     res.status(400).json({ message: "Title can't be only numbers" });
@@ -56,6 +49,17 @@ export default async function handler(req, res) {
     return;
   }
 
+  const blogPost = await prisma.blogPost.findFirst({
+    where: {
+      id: postId,
+      userId: user.id,
+    },
+  });
+
+  if (!blogPost) {
+    return res.status(403).send({ message: "You are not the author of this article!" });
+  }
+
   try {
     await prisma.blogPost.update({
       where: {
@@ -63,7 +67,6 @@ export default async function handler(req, res) {
       },
       data: {
         title,
-        author,
         imageUrl,
         summary,
         updatedAt: new Date(),

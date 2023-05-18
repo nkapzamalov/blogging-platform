@@ -1,8 +1,8 @@
 import React from "react";
 
 export default function NewPostForm({
-  title, author, content, summary, imageUrl, error,
-  handleSubmit, handleTitleChange, handleAuthorChange, handleContentChange, handleSummaryChange, handleImageUrlChange }) {
+  title, content, summary, imageUrl, error,
+  handleSubmit, handleTitleChange, handleContentChange, handleSummaryChange, handleImageUrlChange }) {
 
   return (
     <div className="flex flex-col items-center justify-center mt-20">
@@ -22,12 +22,6 @@ export default function NewPostForm({
           </div>
         </div>
         <div className="flex flex-wrap -mx-3 mb-6">
-          <div className="w-full px-3">
-            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="author">
-              Author
-            </label>
-            <input className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="author" type="text" placeholder="Enter author name" value={author} onChange={handleAuthorChange} />
-          </div>
         </div>
         <div className="flex flex-wrap -mx-3 mb-6">
           <div className="w-full px-3">

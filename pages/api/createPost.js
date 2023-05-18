@@ -22,7 +22,7 @@ export default async function handler(req, res) {
     return res.status(403).send({ message: "Forbidden" });
   }
 
-  const { title, author, content, imageUrl, summary } = req.body;
+  const { title, content, imageUrl, summary } = req.body;
 
   const existingPost = await prisma.blogPost.findFirst({
     where: {
@@ -32,13 +32,6 @@ export default async function handler(req, res) {
 
   if (existingPost) {
     res.status(400).json({ message: `A post with title ${title} already exists` });
-    return;
-  }
-
-  if (!/^[a-zA-Z\s]+$/.test(author)) {
-    res
-      .status(400)
-      .json({ message: "Author can only contain letters and spaces" });
     return;
   }
 
@@ -71,7 +64,6 @@ export default async function handler(req, res) {
     const post = await prisma.blogPost.create({
       data: {
         title,
-        author,
         imageUrl,
         summary,
         publishedAt: new Date(),
@@ -79,6 +71,11 @@ export default async function handler(req, res) {
         content: {
           create: {
             content,
+          },
+        },
+        user: {
+          connect: {
+            id: user.id,
           },
         },
       },

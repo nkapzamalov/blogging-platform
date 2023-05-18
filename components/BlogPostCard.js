@@ -39,7 +39,7 @@ export default function BlogPostCard({ post }) {
               </svg>
             </span>
             <p className="text-sm font-medium text-gray-800">
-              {post.author}
+              {post.user.username}
             </p>
           </div>
           <Link href={`/article/${post.id}`}>
