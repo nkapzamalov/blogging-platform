@@ -1,14 +1,13 @@
-import { useState, useEffect } from 'react';
-import { meResponse } from '../../calls/meEndpoint';
+import { useState, useEffect, useContext } from 'react';
 import Router from 'next/router.js';
 import prismaClient from '../../services/prisma.mjs';
 import Header from '../../components/Header.js';
 import Footer from '../../components/Footer.js';
 import EditForm from '../../components/EditForm';
+import AuthContext from '../../context/AuthContext.js';
 
 export default function EditPostPage({ post }) {
 
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [title, setTitle] = useState(post.title);
   const [author, setAuthor] = useState(post.author);
   const [content, setContent] = useState(post.content.content);
@@ -16,33 +15,36 @@ export default function EditPostPage({ post }) {
   const [imageUrl, setImageUrl] = useState(post.imageUrl);
   const [error, setError] = useState("");
 
-  useEffect(() => {
-    async function getResponse() {
-      const res = await meResponse();
-      if (res.status == 200) {
-        setIsLoggedIn(true);
-      }
+  const { auth } = useContext(AuthContext);
 
+  useEffect(() => {
+    if (auth.isLoggedOut) {
+      Router.push('/login');
     }
-    getResponse();
-  }, [])
+  }, []);
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
+    const options = {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        title,
+        author,
+        content,
+        summary,
+        imageUrl,
+      }),
+    }
+
     try {
-      const response = await fetch(`/api/editPost?id=${post.id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          title,
-          author,
-          content,
-          summary,
-          imageUrl,
-        }),
-      });
+
+      if (auth.accessToken !== null) {
+        options.headers["Authorization"] = auth.accessToken;
+      }
+      const response = await fetch(`/api/editPost?id=${post.id}`, options);
 
       const data = await response.json()
 
@@ -80,7 +82,7 @@ export default function EditPostPage({ post }) {
 
   return (
     <>
-      <Header isLoggedIn={isLoggedIn} />
+      <Header />
       <EditForm
         title={title}
         author={author}

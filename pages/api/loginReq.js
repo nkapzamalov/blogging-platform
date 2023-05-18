@@ -35,7 +35,7 @@ export default async function handler(req, res) {
     },
   });
 
-  return res.status(200).send({ accessToken });
+  return res.status(200).send({ user, accessToken });
 }
 
 function generateToken(len = 64) {

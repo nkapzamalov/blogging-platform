@@ -1,22 +1,33 @@
 import Article from "../../components/Article";
 import prismaClient from "../../services/prisma.mjs";
-import { meResponse } from "../../calls/meEndpoint";
-import { useState, useEffect } from "react";
+import { useContext } from 'react';
 import Router from "next/router";
+import AuthContext from '../../context/AuthContext';
 
 export default function articlePage({ article }) {
 
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { auth } = useContext(AuthContext);
 
   const handleDelete = async (e) => {
     e.preventDefault();
-    try {
-      const response = await fetch(`/api/deletePost?id=${article.blogPostId}`, {
-        method: 'DELETE',
-      });
+    if (auth.isLoggedOut) {
+      return Router.push('/login');
+    }
+    const options = {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }
 
-      if (response.ok) {
-        Router.push('/');
+    try {
+      if (auth.accessToken !== null) {
+        options.headers["Authorization"] = auth.accessToken;
+      }
+      const response = await fetch(`/api/deletePost?id=${article.blogPostId}`, options);
+
+      if (response.status == 200) {
+        return Router.push('/');
       }
     } catch (error) {
       console.error(error);
@@ -24,22 +35,14 @@ export default function articlePage({ article }) {
   };
 
   const handleEdit = () => {
+    if (auth.isLoggedOut) {
+      return Router.push('/login');
+    }
     const editPageUrl = `/editPost/${article.blogPostId}`;
     Router.push(editPageUrl);
   };
 
-  useEffect(() => {
-    async function getResponse() {
-      const res = await meResponse();
-      if (res.status == 200) {
-        setIsLoggedIn(true);
-      }
-
-    }
-    getResponse();
-  }, []);
-
-  return <Article article={article} isLoggedIn={isLoggedIn} handleDelete={handleDelete} handleEdit={handleEdit} />
+  return <Article article={article} handleDelete={handleDelete} handleEdit={handleEdit} />
 }
 
 export async function getServerSideProps({ query }) {

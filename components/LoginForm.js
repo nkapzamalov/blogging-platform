@@ -1,22 +1,24 @@
-import React, { useState, useEffect } from "react";
-import Router from "next/router";
+import React, { useState, useEffect, useContext } from 'react';
+import Router from 'next/router';
+import AuthContext from '../context/AuthContext';
 
 export default function LoginForm() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [errMsg, setErrMsg] = useState("");
+  const { logIn } = useContext(AuthContext);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [errMsg, setErrMsg] = useState('');
 
   useEffect(() => {
-    setErrMsg("");
+    setErrMsg('');
   }, [email, password]);
 
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("api/loginReq", {
-        method: "POST",
+      const response = await fetch('api/loginReq', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           email,
@@ -25,14 +27,16 @@ export default function LoginForm() {
       });
       const data = await response.json();
 
-      if (response.status == 200) {
-        localStorage.setItem("authToken", data.accessToken);
-        return Router.push("/");
+      if (response.status === 200) {
+        const { user, accessToken } = data;
+        localStorage.setItem('authToken', accessToken);
+        localStorage.setItem('authUser', JSON.stringify(user));
+        logIn(user, accessToken);
+        return Router.push('/');
       }
-
       setErrMsg(data.message);
     } catch (err) {
-      setErrMsg("Unexpected error! Please try again later!");
+      setErrMsg('Unexpected error! Please try again later!');
     }
   };
 

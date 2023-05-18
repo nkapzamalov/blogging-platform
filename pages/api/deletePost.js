@@ -4,8 +4,22 @@ export default async function handler(req, res) {
   const prisma = prismaClient()
 
   if (req.method !== 'DELETE') {
-    res.status(405).json({ error: 'Method not allowed' });
-    return;
+    return res.status(405).json({ error: 'Method not allowed' });
+  }
+
+  const user = await prisma.user.findFirst({
+    where: {
+      token: {
+        some: {
+          token: req.headers.authorization,
+        },
+      },
+    },
+  });
+
+
+  if (user == null) {
+    return res.status(403).send({ message: "Forbidden" });
   }
 
   const postId = parseInt(req.query.id);
@@ -25,7 +39,6 @@ export default async function handler(req, res) {
 
   try {
     await prisma.$transaction([deleteContent, deleteBlog])
-
     res.status(200).json({ message: 'Post deleted successfully' });
   } catch (error) {
     console.error(error);

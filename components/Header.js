@@ -1,42 +1,25 @@
-import { useState, useEffect } from 'react'
-import { meJson, meResponse } from '../calls/meEndpoint'
+import { useState, useContext } from 'react'
 import { Dialog } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
+import AuthContext from '../context/AuthContext';
 import Link from 'next/link'
+import Router from 'next/router';
 
-export default function Header({ isLoggedIn }) {
+export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const [userId, setUserId] = useState("")
+  const { logOut, auth } = useContext(AuthContext);
 
-  useEffect(() => {
-    async function getResponse() {
-      const res = await meJson();
-      const userId = res
-      setUserId(userId)
-    }
-    getResponse();
-  }, []);
+  const handleLogOut = () => {
+    logOut()
+    localStorage.removeItem("authToken")
+    localStorage.removeItem("authUser")
+  }
 
-  const handleLogout = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await fetch("/api/logout", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          userId
-        }),
-      });
-
-      const data = await response.json();
-      if (!response.ok) {
-        throw new Error(data.message);
-      }
-      Router.push("/")
-    } catch (err) {
-
+  const handleCreateArticle = () => {
+    if (auth.isLoggedOut) {
+      return Router.push("/login");
+    } else {
+      return Router.push("/newPost");
     }
   };
 
@@ -60,18 +43,16 @@ export default function Header({ isLoggedIn }) {
           <Link href="/" className="text-sm font-semibold leading-6 text-gray-900 hover:text-mypurple">
             Home
           </Link>
-          {isLoggedIn === true && (
-            <Link href="/newPost" className="text-sm font-semibold leading-6 text-gray-900 hover:text-mypurple">
-              Create Article
-            </Link>
-          )}
-          {isLoggedIn === false && (
+          <button onClick={handleCreateArticle} className="text-sm font-semibold leading-6 text-gray-900 hover:text-mypurple">
+            Create Article
+          </button>
+          {auth.isLoggedOut && (
             <Link href="/login" className="text-sm font-semibold leading-6 text-gray-900 hover:text-mypurple">
               Log in <span aria-hidden="true">&rarr;</span>
             </Link>
           )}
-          {isLoggedIn === true && (
-            <button onClick={handleLogout} className="text-sm font-semibold leading-6 text-gray-900 hover:text-mypurple">
+          {!auth.isLoggedOut && (
+            <button onClick={handleLogOut} className="text-sm font-semibold leading-6 text-gray-900 hover:text-mypurple">
               Log out <span aria-hidden="true">&rarr;</span>
             </button>
           )}
@@ -99,17 +80,15 @@ export default function Header({ isLoggedIn }) {
                 <Link href="/" className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
                   Home
                 </Link>
-                {isLoggedIn === true && (
-                  <Link
-                    href="/newPost"
-                    className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-                  >
-                    CreateArticle
-                  </Link>
-                )}
+                <button
+                  onClick={handleCreateArticle}
+                  className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+                >
+                  CreateArticle
+                </button>
               </div>
               <div className="py-6">
-                {isLoggedIn === false && (
+                {auth.isLoggedOut && (
                   < Link
                     href="/login"
                     className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
@@ -117,13 +96,13 @@ export default function Header({ isLoggedIn }) {
                     Log in
                   </Link>
                 )}
-                {isLoggedIn === true && (
-                  < Link
-                    href="/logout"
+                {!auth.isLoggedOut && (
+                  < button
+                    onClick={handleLogOut}
                     className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                   >
                     Log out
-                  </Link>
+                  </button>
                 )}
               </div>
             </div>

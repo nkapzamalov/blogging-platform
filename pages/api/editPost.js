@@ -4,8 +4,21 @@ export default async function handler(req, res) {
   const prisma = prismaClient()
 
   if (req.method !== 'PUT') {
-    res.status(405).json({ error: 'Method not allowed' });
-    return;
+    return res.status(405).json({ error: 'Method not allowed' });
+  }
+
+  const user = await prisma.user.findFirst({
+    where: {
+      token: {
+        some: {
+          token: req.headers.authorization,
+        },
+      },
+    },
+  });
+
+  if (user == null) {
+    return res.status(403).send({ message: "Forbidden" });
   }
 
   const postId = parseInt(req.query.id);

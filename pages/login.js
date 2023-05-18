@@ -1,26 +1,26 @@
 import LoginForm from "@/components/LoginForm";
-import { meResponse } from "../calls/meEndpoint";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import Router from "next/router";
+import AuthContext from '../context/AuthContext';
+import Header from "../components/Header";
 
 export default function LoginPage() {
+  const { auth } = useContext(AuthContext);
   const [isCheckingForLoggedInUser, setIsCheckingForLoggedInUser] =
     useState(true);
 
   useEffect(() => {
-    async function getResponse() {
-      const res = await meResponse();
-      if (res.status == 200) {
-        return Router.push("/");
-      }
+    if (!auth.isLoggedOut) {
+      Router.push('/');
+    } else {
       setIsCheckingForLoggedInUser(false);
     }
-    getResponse();
   }, []);
 
   return (
-    <section>
+    <>
+      <Header />
       {isCheckingForLoggedInUser ? <div>Loading...</div> : <LoginForm />}
-    </section>
+    </>
   );
 }

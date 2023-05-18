@@ -5,7 +5,7 @@ import Header from "./Header";
 import Footer from "./Footer";
 import SearcBar from "./SearcBar";
 
-export default function BlogPostGrid({ initialPosts, initialCursor, isLoggedIn, handleLogout, pages }) {
+export default function BlogPostGrid({ initialPosts, initialCursor, pages }) {
   const [posts, setPosts] = useState(initialPosts);
   const [cursor, setCursor] = useState(initialCursor);
 
@@ -20,7 +20,6 @@ export default function BlogPostGrid({ initialPosts, initialCursor, isLoggedIn, 
 
       });
       const data = await response.json();
-      setCurrentPage(currentPage + 1)
       setPosts(data.blogPosts);
       setCursor(data.myCursor);
     } catch (error) {
@@ -47,7 +46,7 @@ export default function BlogPostGrid({ initialPosts, initialCursor, isLoggedIn, 
   };
   return (
     <>
-      <Header isLoggedIn={isLoggedIn} handleLogout={handleLogout} />
+      <Header />
       <SearcBar />
       <div className="flex flex-col items-center gap-20">
         <div className="grid gap-6 mt-20">

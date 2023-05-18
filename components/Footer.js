@@ -5,7 +5,6 @@ export default function Footer() {
         <p className="text-center text-xs leading-5 text-white">
           &copy; 2022 RiseBlog, Inc. All rights reserved.
         </p>
-
       </div>
     </footer>
   )

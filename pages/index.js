@@ -1,24 +1,11 @@
 import BlogPostGrid from "../components/BlogPostGrid"
 import prismaClient from "../services/prisma.mjs";
-import { meResponse } from "../calls/meEndpoint";
 import { useState, useEffect } from "react";
 
 
 export default function Home({ initialPosts, initialCursor, pages }) {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  useEffect(() => {
-    async function getResponse() {
-      const res = await meResponse();
-      if (res.status == 200) {
-        setIsLoggedIn(true);
-      }
-
-    }
-    getResponse();
-  }, []);
-
-  return <BlogPostGrid initialPosts={initialPosts} initialCursor={initialCursor} isLoggedIn={isLoggedIn} />
+  return <BlogPostGrid initialPosts={initialPosts} initialCursor={initialCursor} />
 }
 
 export async function getServerSideProps() {

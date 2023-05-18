@@ -3,13 +3,13 @@ import Footer from "../components/Footer";
 import { format } from 'date-fns';
 import { enUS } from 'date-fns/locale';
 
-export default function Article({ article, isLoggedIn, handleDelete, handleEdit }) {
+export default function Article({ article, handleDelete, handleEdit }) {
   const publishedAt = format(new Date(article.blogPost.publishedAt), "EEE, MMM d yyyy h:mm a 'EST'", { locale: enUS });
   const updatedAt = format(new Date(article.blogPost.updatedAt), "EEE, MMM d yyyy h:mm a 'EST'", { locale: enUS });
 
   return (
     <>
-      <Header isLoggedIn={isLoggedIn} />
+      <Header />
       <div className="px-6 py-32 lg:px-8 mt-20">
         <div className="mx-auto max-w-3xl text-base leading-7 text-gray-700">
           <div className="flex items-center gap-x-2 md:gap-x-4">
@@ -30,22 +30,20 @@ export default function Article({ article, isLoggedIn, handleDelete, handleEdit 
             <p className="font-light text-lg text-black mt-10">
               {article.content}
             </p>
-            {isLoggedIn && (
-              <div className="flex space-x-4 mt-6">
-                <button
-                  className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
-                  onClick={handleEdit}
-                >
-                  Edit
-                </button>
-                <button
-                  className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded"
-                  onClick={handleDelete}
-                >
-                  Delete
-                </button>
-              </div>
-            )}
+            <div className="flex space-x-4 mt-6">
+              <button
+                className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
+                onClick={handleEdit}
+              >
+                Edit
+              </button>
+              <button
+                className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded"
+                onClick={handleDelete}
+              >
+                Delete
+              </button>
+            </div>
           </div>
         </div>
       </div>

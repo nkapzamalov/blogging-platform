@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect, useContext } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import NewPostForm from "../components/NewPostForm";
 import Router from "next/router";
+import AuthContext from '../context/AuthContext';
 
 
 export default function NewPost() {
@@ -13,22 +14,36 @@ export default function NewPost() {
   const [imageUrl, setImageUrl] = useState("");
   const [error, setError] = useState("");
 
+  const { auth } = useContext(AuthContext);
+
+  useEffect(() => {
+    if (auth.isLoggedOut) {
+      Router.push('/login');
+    }
+  }, []);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        title,
+        author,
+        content,
+        summary,
+        imageUrl,
+      }),
+    }
+
     try {
-      const response = await fetch("/api/createPost", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          title,
-          author,
-          content,
-          summary,
-          imageUrl,
-        }),
-      });
+      if (auth.accessToken !== null) {
+        options.headers["Authorization"] = auth.accessToken;
+      }
+      const response = await fetch("/api/createPost", options);
 
       const data = await response.json();
       if (!response.ok) {

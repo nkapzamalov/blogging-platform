@@ -8,6 +8,20 @@ export default async function handler(req, res) {
     return;
   }
 
+  const user = await prisma.user.findFirst({
+    where: {
+      token: {
+        some: {
+          token: req.headers.authorization,
+        },
+      },
+    },
+  });
+
+  if (user == null) {
+    return res.status(403).send({ message: "Forbidden" });
+  }
+
   const { title, author, content, imageUrl, summary } = req.body;
 
   const existingPost = await prisma.blogPost.findFirst({
