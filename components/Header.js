@@ -1,12 +1,44 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { meJson, meResponse } from '../calls/meEndpoint'
 import { Dialog } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import Link from 'next/link'
 
-
-
 export default function Header({ isLoggedIn }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [userId, setUserId] = useState("")
+
+  useEffect(() => {
+    async function getResponse() {
+      const res = await meJson();
+      const userId = res
+      setUserId(userId)
+    }
+    getResponse();
+  }, []);
+
+  const handleLogout = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch("/api/logout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userId
+        }),
+      });
+
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message);
+      }
+      Router.push("/")
+    } catch (err) {
+
+    }
+  };
 
   return (
     <header>
@@ -39,9 +71,9 @@ export default function Header({ isLoggedIn }) {
             </Link>
           )}
           {isLoggedIn === true && (
-            <Link href="/logout" className="text-sm font-semibold leading-6 text-gray-900 hover:text-mypurple">
+            <button onClick={handleLogout} className="text-sm font-semibold leading-6 text-gray-900 hover:text-mypurple">
               Log out <span aria-hidden="true">&rarr;</span>
-            </Link>
+            </button>
           )}
         </div>
       </nav>
@@ -87,7 +119,7 @@ export default function Header({ isLoggedIn }) {
                 )}
                 {isLoggedIn === true && (
                   < Link
-                    href="/login"
+                    href="/logout"
                     className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                   >
                     Log out

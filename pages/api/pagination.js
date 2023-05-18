@@ -2,12 +2,9 @@ import prismaClient from "../../services/prisma.mjs";
 
 export default async function handler(req, res) {
   const prisma = prismaClient();
-  const totalPosts = await prisma.blogPost.count();
   const { cursor, take } = req.query;
 
-
-
-  const pages = Math.ceil(totalPosts / 10)
+  const totalPosts = await prisma.blogPost.count();
 
   const blogPosts = await prisma.blogPost.findMany({
     take: Number(take),
@@ -17,12 +14,8 @@ export default async function handler(req, res) {
     },
   });
 
-  console.log(blogPosts.length);
-
-  const lastPostInResults = blogPosts[blogPosts.length - 1];
-  const myCursor = lastPostInResults.id;
-
-  console.log(myCursor);
+  const totalPages = Math.ceil(totalPosts / Number(take));
+  const myCursor = blogPosts[blogPosts.length - 1].id;
 
   res.status(200).json({ myCursor, blogPosts });
 }

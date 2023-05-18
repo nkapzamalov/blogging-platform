@@ -11,10 +11,17 @@ export default async function handler(req, res) {
         },
       },
     },
+    include: {
+      token: {
+        select: {
+          id: true
+        }
+      }
+    }
   });
 
   if (user == null) {
     return res.status(403).send({ message: "Forbidden" });
   }
-  return res.status(200).send({ user: user.id, user: user.email });
+  return res.status(200).send({ user });
 }

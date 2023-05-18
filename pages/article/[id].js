@@ -4,7 +4,6 @@ import { meResponse } from "../../calls/meEndpoint";
 import { useState, useEffect } from "react";
 import Router from "next/router";
 
-
 export default function articlePage({ article }) {
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -46,7 +45,6 @@ export default function articlePage({ article }) {
 export async function getServerSideProps({ query }) {
 
   const prisma = prismaClient()
-
   const { id } = query;
 
   if (isNaN(id)) {

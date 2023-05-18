@@ -7,10 +7,6 @@ import { useState, useEffect } from "react";
 export default function Home({ initialPosts, initialCursor, pages }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const handleLogout = () => {
-    setIsLoggedIn(false);
-  }
-
   useEffect(() => {
     async function getResponse() {
       const res = await meResponse();
@@ -22,14 +18,12 @@ export default function Home({ initialPosts, initialCursor, pages }) {
     getResponse();
   }, []);
 
-  return <BlogPostGrid initialPosts={initialPosts} initialCursor={initialCursor} isLoggedIn={isLoggedIn} handleLogout={handleLogout} pages={pages} />
+  return <BlogPostGrid initialPosts={initialPosts} initialCursor={initialCursor} isLoggedIn={isLoggedIn} />
 }
 
 export async function getServerSideProps() {
   const prisma = prismaClient();
   const take = 10;
-  const totalPosts = await prisma.blogPost.count();
-  const pages = Math.ceil(totalPosts / 10)
 
   let initialPosts = await prisma.blogPost.findMany({
     take,
@@ -46,7 +40,6 @@ export async function getServerSideProps() {
     props: {
       initialPosts,
       initialCursor,
-      pages
     },
   };
 }

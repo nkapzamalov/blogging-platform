@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 import BlogPostCard from "./BlogPostCard";
 import Pagination from "./Pagination";
 import Header from "./Header";
@@ -12,7 +12,7 @@ export default function BlogPostGrid({ initialPosts, initialCursor, isLoggedIn, 
   const handleNextPage = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`/api/blogPosts?cursor=${cursor}&take=10`, {
+      const response = await fetch(`/api/pagination?cursor=${cursor}&take=10`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -20,9 +20,9 @@ export default function BlogPostGrid({ initialPosts, initialCursor, isLoggedIn, 
 
       });
       const data = await response.json();
+      setCurrentPage(currentPage + 1)
       setPosts(data.blogPosts);
       setCursor(data.myCursor);
-      console.log(data);
     } catch (error) {
       console.error(error);
     }
@@ -32,7 +32,7 @@ export default function BlogPostGrid({ initialPosts, initialCursor, isLoggedIn, 
 
     e.preventDefault();
     try {
-      const response = await fetch(`/api/blogPosts?cursor=${cursor}&take=-10`, {
+      const response = await fetch(`/api/pagination?cursor=${cursor - posts.length}&take=-10`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -41,7 +41,6 @@ export default function BlogPostGrid({ initialPosts, initialCursor, isLoggedIn, 
       const data = await response.json();
       setPosts(data.blogPosts);
       setCursor(data.myCursor);
-      console.log(data);
     } catch (error) {
       console.error(error);
     }
@@ -61,6 +60,7 @@ export default function BlogPostGrid({ initialPosts, initialCursor, isLoggedIn, 
           handlePreviousPage={handlePreviousPage}
           hasPreviousPage={cursor === initialCursor}
           hasNextPage={posts.length > 0}
+          pages={pages}
         />
       </div>
       <Footer />

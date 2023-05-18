@@ -1,7 +1,7 @@
 import React from "react";
 import { ArrowLongLeftIcon, ArrowLongRightIcon } from "@heroicons/react/20/solid";
 
-export default function Pagination({ handlePreviousPage, handleNextPage, hasPreviousPage, hasNextPage }) {
+export default function Pagination({ handlePreviousPage, handleNextPage, hasPreviousPage, hasNextPage, pages }) {
   return (
     <nav className="flex items-center justify-between w-3/4 border-t border-gray-200 px-4 sm:px-0">
       <div className="-mt-px flex w-0 flex-1">
@@ -29,6 +29,6 @@ export default function Pagination({ handlePreviousPage, handleNextPage, hasPrev
           <ArrowLongRightIcon className="ml-3 h-5 w-5 text-gray-400" aria-hidden="true" />
         </button>
       </div>
-    </nav>
+    </nav >
   );
 }
