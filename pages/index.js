@@ -2,14 +2,16 @@ import BlogPostGrid from "../components/BlogPostGrid"
 import prismaClient from "../services/prisma.mjs";
 
 
-export default function Home({ initialPosts, initialCursor }) {
+export default function Home({ initialPosts, initialCursor, totalPages }) {
 
-  return <BlogPostGrid initialPosts={initialPosts} initialCursor={initialCursor} />
+  return <BlogPostGrid initialPosts={initialPosts} initialCursor={initialCursor} totalPages={totalPages} />
 }
 
 export async function getServerSideProps() {
   const prisma = prismaClient();
   const take = 10;
+  const totalPosts = await prisma.blogPost.count();
+  const totalPages = Math.ceil(totalPosts / Number(take));
 
   let initialPosts = await prisma.blogPost.findMany({
     take,
@@ -29,6 +31,7 @@ export async function getServerSideProps() {
     props: {
       initialPosts,
       initialCursor,
+      totalPages
     },
   };
 }

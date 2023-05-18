@@ -4,8 +4,6 @@ export default async function handler(req, res) {
   const prisma = prismaClient();
   const { cursor, take } = req.query;
 
-  const totalPosts = await prisma.blogPost.count();
-
   const blogPosts = await prisma.blogPost.findMany({
     take: Number(take),
     skip: Number(take) === 10 ? 1 : 0,
@@ -17,8 +15,8 @@ export default async function handler(req, res) {
     },
   });
 
-  const totalPages = Math.ceil(totalPosts / Number(take));
   const myCursor = blogPosts[blogPosts.length - 1].id;
+  const hasNextPage = blogPosts.length === Math.abs(take);
 
-  res.status(200).json({ myCursor, blogPosts });
+  res.status(200).json({ myCursor, blogPosts, hasNextPage });
 }

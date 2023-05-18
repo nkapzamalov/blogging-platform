@@ -5,12 +5,12 @@ import Header from "./Header";
 import Footer from "./Footer";
 import SearcBar from "./SearcBar";
 
-export default function BlogPostGrid({ initialPosts, initialCursor, pages }) {
+export default function BlogPostGrid({ initialPosts, initialCursor, totalPages }) {
   const [posts, setPosts] = useState(initialPosts);
   const [cursor, setCursor] = useState(initialCursor);
+  const [hasNextPage, setHasNextPage] = useState(true);
 
   const handleNextPage = async (e) => {
-
     e.preventDefault();
     try {
       const response = await fetch(`/api/pagination?cursor=${cursor}&take=10`, {
@@ -21,6 +21,7 @@ export default function BlogPostGrid({ initialPosts, initialCursor, pages }) {
 
       });
       const data = await response.json();
+      setHasNextPage(data.hasNextPage)
       setPosts(data.blogPosts);
       setCursor(data.myCursor);
     } catch (error) {
@@ -29,7 +30,6 @@ export default function BlogPostGrid({ initialPosts, initialCursor, pages }) {
   };
 
   const handlePreviousPage = async (e) => {
-
     e.preventDefault();
     try {
       const response = await fetch(`/api/pagination?cursor=${cursor - posts.length}&take=-10`, {
@@ -39,12 +39,40 @@ export default function BlogPostGrid({ initialPosts, initialCursor, pages }) {
         },
       });
       const data = await response.json();
+      setHasNextPage(data.hasNextPage)
       setPosts(data.blogPosts);
       setCursor(data.myCursor);
     } catch (error) {
       console.error(error);
     }
   };
+
+  // const handlePageChange = async () => {
+
+
+  //   const index = (3 - 1) * 10;
+
+  //   // console.log(index);
+  //   console.log(posts);
+  //   if (index >= 0 && index < posts.length) {
+  //     const cursor = posts[index].id;
+  //     console.log(cursor);
+  //     try {
+  //       const response = await fetch(`/api/pagination?cursor=${cursor}&take=10`, {
+  //         method: "GET",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //         },
+  //       });
+  //       const data = await response.json();
+  //       setHasNextPage(data.hasNextPage);
+  //       setPosts(data.blogPosts);
+  //       setCursor(data.myCursor);
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   }
+  // };
   return (
     <>
       <Header />
@@ -58,9 +86,10 @@ export default function BlogPostGrid({ initialPosts, initialCursor, pages }) {
         <Pagination
           handleNextPage={handleNextPage}
           handlePreviousPage={handlePreviousPage}
+          handlePageChange={handlePageChange}
           hasPreviousPage={cursor === initialCursor}
-          hasNextPage={posts.length > 0}
-          pages={pages}
+          hasNextPage={hasNextPage}
+          totalPages={totalPages}
         />
       </div>
       <Footer />
