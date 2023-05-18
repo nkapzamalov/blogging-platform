@@ -1,16 +1,7 @@
 import { ArrowLongLeftIcon, ArrowLongRightIcon } from "@heroicons/react/20/solid";
 
-export default function Pagination({ handlePreviousPage, handleNextPage, hasPreviousPage, hasNextPage, handlePageChange, totalPages }) {
+export default function Pagination({ handlePreviousPage, handleNextPage, hasPreviousPage, hasNextPage, totalPages }) {
 
-  const paginationNumbers = [];
-
-  for (let i = 1; i <= totalPages; i++) {
-    paginationNumbers.push(
-      <button key={i} onClick={() => handlePageChange(i)}>
-        {i}
-      </button>
-    );
-  }
   return (
     <nav className="flex items-center justify-between w-3/4 border-t border-gray-200 px-4 sm:px-0">
       <div className="-mt-px flex w-0 flex-1">
@@ -23,11 +14,6 @@ export default function Pagination({ handlePreviousPage, handleNextPage, hasPrev
           <ArrowLongLeftIcon className="mr-3 h-5 w-5 text-gray-400" aria-hidden="true" />
           Previous
         </button>
-      </div>
-      <div className="hidden md:-mt-px md:flex">
-        <div className="flex">
-          {paginationNumbers}
-        </div>
       </div>
       <div className="-mt-px flex w-0 flex-1 justify-end">
         <button

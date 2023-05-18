@@ -47,32 +47,6 @@ export default function BlogPostGrid({ initialPosts, initialCursor, totalPages }
     }
   };
 
-  // const handlePageChange = async () => {
-
-
-  //   const index = (3 - 1) * 10;
-
-  //   // console.log(index);
-  //   console.log(posts);
-  //   if (index >= 0 && index < posts.length) {
-  //     const cursor = posts[index].id;
-  //     console.log(cursor);
-  //     try {
-  //       const response = await fetch(`/api/pagination?cursor=${cursor}&take=10`, {
-  //         method: "GET",
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //         },
-  //       });
-  //       const data = await response.json();
-  //       setHasNextPage(data.hasNextPage);
-  //       setPosts(data.blogPosts);
-  //       setCursor(data.myCursor);
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-  //   }
-  // };
   return (
     <>
       <Header />
@@ -86,7 +60,6 @@ export default function BlogPostGrid({ initialPosts, initialCursor, totalPages }
         <Pagination
           handleNextPage={handleNextPage}
           handlePreviousPage={handlePreviousPage}
-          handlePageChange={handlePageChange}
           hasPreviousPage={cursor === initialCursor}
           hasNextPage={hasNextPage}
           totalPages={totalPages}
