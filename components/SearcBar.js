@@ -90,7 +90,7 @@ function SearchInput({ searchTerm, onSearchTermChange }) {
         value={searchTerm}
         onChange={onSearchTermChange}
         className=" text-black px-4 py-2 rounded-full w-1/2"
-        placeholder="Search for products..."
+        placeholder="Search for articles..."
       />
     </div>
   );
