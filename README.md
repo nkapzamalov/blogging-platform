@@ -29,9 +29,10 @@ Follow these steps to set up and run the project:
 3. Install project dependencies using Yarn by running the following command: yarn install
 4. Set up the required environment variables mentioned in the Prerequisites section by creating a `.env` file in the root of your project and populating it accordingly.
 5. Ensure that you have MySQL installed locally. If not, download and install MySQL from [https://dev.mysql.com/downloads/].
-6. Create a new MySQL database for your project.
+6. Create a new MySQL database for your project with MqSQL Workbench.
 7. Update the `DATABASE_URL` environment variable in your `.env` file with the appropriate MySQL connection details (e.g., host, port, username, password, and database name).
-8. Run the database migrations to create the required database tables. Execute the following command:npx prisma migrate dev
+8. Run the database migrations to create the required database tables. Execute the following command:npx prisma migrate dev.
+   You can check the database with this command: npx prisma studio
 9. Start the development server using the following command:yarn dev
 
 ## Seeding Dummy Data
