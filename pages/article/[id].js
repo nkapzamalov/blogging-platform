@@ -6,7 +6,7 @@ import prismaClient from "../../services/prisma.mjs";
 
 export default function ArticlePage({ article, author }) {
   const [error, setError] = useState("");
-  const [deleted, setDeleted] = useState(false); // New state variable
+  const [deleted, setDeleted] = useState(false);
 
   const { auth } = useContext(AuthContext);
 

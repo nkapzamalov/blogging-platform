@@ -4,7 +4,6 @@ import OutsideClickHandler from "react-outside-click-handler";
 import CloseOnEscape from "react-close-on-escape";
 import { useRouter } from "next/router";
 
-
 export default function SearchBar() {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState([]);

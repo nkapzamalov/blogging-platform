@@ -5,7 +5,6 @@ import NewPostForm from "../components/NewPostForm";
 import Router from "next/router";
 import AuthContext from '../context/AuthContext';
 
-
 export default function NewPost() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
