@@ -47,6 +47,19 @@ export default function BlogPostGrid({ initialPosts, initialCursor, totalPages }
     }
   };
 
+  if (initialCursor === null && posts.length === 0) {
+    return (
+      <>
+        <Header />
+        <SearcBar />
+        <div className="flex flex-col items-center justify-center h-screen">
+          <p className="text-2xl text-gray-500">No blogs to display.</p>
+        </div>
+        <Footer />
+      </>
+    );
+  }
+
   return (
     <>
       <Header />

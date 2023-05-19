@@ -30,7 +30,7 @@ export default function BlogPostCard({ post }) {
           </p>
           <p className="text-gray-500 font-medium text-xs hidden md:block">{timeAgo}</p>
         </div>
-        <p className="line-clamp-2 md:text-sm text-gray-500 w-60">{post.summary}</p>
+        <p className="line-clamp-2 md:text-sm first-letter:uppercase text-gray-500 w-60">{post.summary}</p>
         <div className="flex justify-between">
           <div className="flex items-center gap-x-2 md:gap-x-4 ">
             <span className="inline-block h-8 w-8 overflow-hidden rounded-full bg-gray-100">

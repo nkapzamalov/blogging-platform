@@ -1,16 +1,18 @@
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import SearchBar from "./SearcBar";
 import { format } from 'date-fns';
 import { enUS } from 'date-fns/locale';
 
-export default function Article({ article, author, error, handleDelete, handleEdit }) {
+export default function Article({ article, author, error, handleDelete, handleEdit, deleted }) {
   const publishedAt = format(new Date(article.blogPost.publishedAt), "EEE, MMM d yyyy h:mm a 'EST'", { locale: enUS });
   const updatedAt = format(new Date(article.blogPost.updatedAt), "EEE, MMM d yyyy h:mm a 'EST'", { locale: enUS });
 
   return (
     <>
       <Header />
-      <div className="px-6 py-32 lg:px-8 mt-20">
+      <SearchBar />
+      <div className="px-6 py-32 lg:px-8 ">
         <div className="mx-auto max-w-3xl text-base leading-7 text-gray-700">
           <div className="flex items-center gap-x-2 md:gap-x-4">
             <span className="inline-block h-8 w-8 overflow-hidden rounded-full bg-gray-100">
@@ -21,23 +23,22 @@ export default function Article({ article, author, error, handleDelete, handleEd
             <p className="text-sm font-medium text-gray-800">
               {author.username}
             </p>
-            {error && (
-              <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-2 rounded mb-4">
-                {error}
-              </div>
-            )}
           </div>
-          <h1 className="mt-9 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">{article.blogPost.title}</h1>
+          <h1 className="mt-9 text-3xl font-bold tracking-tight first-letter:uppercase text-gray-900 sm:text-4xl">
+            {article.blogPost.title}
+          </h1>
           <div className="mt-10 max-w-2xl">
-            <p className="font-medium text-base text-mygray">
+            <p className="font-medium text-base text-gray-600">
               PUBLISHED {publishedAt} | UPDATED {updatedAt}
             </p>
-            <p className="font-light text-lg text-black mt-10">
-              {article.content}
-            </p>
-            <div className="flex space-x-4 mt-6">
+            <div className="font-light text-lg first-letter:uppercase text-gray-900 mt-10">
+              {article.content.split('\n').map((paragraph, index) => (
+                <p key={index}>{paragraph}</p>
+              ))}
+            </div>
+            <div className="flex gap-5 space-x-4 mt-10">
               <button
-                className="bg-mypurple  text-white px-4 py-2 rounded focus:outline-none focus:ring-2 "
+                className="bg-mypurple text-white px-4 py-2 rounded focus:outline-none focus:ring-2 "
                 onClick={handleEdit}
               >
                 Edit
@@ -49,6 +50,16 @@ export default function Article({ article, author, error, handleDelete, handleEd
                 Delete
               </button>
             </div>
+            {deleted && (
+              <div className="bg-green-100 border border-green-400 text-green-700 text-center px-4 py-2 rounded mb-4 mt-10">
+                Article deleted successfully!
+              </div>
+            )}
+            {error && (
+              <div className="bg-red-100 border border-red-400 text-red-700 text-center px-4 py-2 rounded mb-4 mt-10">
+                {error}
+              </div>
+            )}
           </div>
         </div>
       </div>

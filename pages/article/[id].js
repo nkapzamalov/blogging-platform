@@ -1,11 +1,12 @@
-import Article from "../../components/Article";
-import prismaClient from "../../services/prisma.mjs";
-import { useContext, useState } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import Router from "next/router";
 import AuthContext from '../../context/AuthContext';
+import Article from "../../components/Article";
+import prismaClient from "../../services/prisma.mjs";
 
-export default function articlePage({ article, author }) {
+export default function ArticlePage({ article, author }) {
   const [error, setError] = useState("");
+  const [deleted, setDeleted] = useState(false); // New state variable
 
   const { auth } = useContext(AuthContext);
 
@@ -14,28 +15,30 @@ export default function articlePage({ article, author }) {
     if (auth.isLoggedOut) {
       return Router.push('/login');
     }
+
     const options = {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
       },
-    }
+    };
 
     try {
       if (auth.accessToken !== null) {
         options.headers["Authorization"] = auth.accessToken;
       }
-      const response = await fetch(`/api/deletePost?id=${article.blogPostId}`, options);
 
-      const data = await response.json()
+      const response = await fetch(`/api/deletePost?id=${article.blogPostId}`, options);
+      const data = await response.json();
 
       if (response.status == 200) {
-        return Router.push('/');
+        // Set deleted state to true after successful deletion
+        setDeleted(true);
+      } else {
+        throw new Error(data.message);
       }
-      throw new Error(data.message);
-
     } catch (error) {
-      setError(error.message)
+      setError(error.message);
     }
   };
 
@@ -43,11 +46,32 @@ export default function articlePage({ article, author }) {
     if (auth.isLoggedOut) {
       return Router.push('/login');
     }
+
     const editPageUrl = `/editPost/${article.blogPostId}`;
     Router.push(editPageUrl);
   };
 
-  return <Article article={article} author={author} error={error} handleDelete={handleDelete} handleEdit={handleEdit} />
+  useEffect(() => {
+    if (deleted) {
+      const timeout = setTimeout(() => {
+        Router.push('/');
+      }, 2000);
+      return () => clearTimeout(timeout);
+    }
+  }, [deleted]);
+
+  return (
+    <div>
+      <Article
+        article={article}
+        author={author}
+        error={error}
+        handleDelete={handleDelete}
+        handleEdit={handleEdit}
+        deleted={deleted}
+      />
+    </div>
+  );
 }
 
 export async function getServerSideProps({ query }) {

@@ -5,11 +5,6 @@ export default function EditForm({
   return (
     <div className="max-w-3xl mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold mb-4">Edit Post</h1>
-      {error && (
-        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-2 rounded mb-4">
-          {error}
-        </div>
-      )}
       <form onSubmit={handleFormSubmit}>
         <div className="mb-4">
           <label htmlFor="title" className="block font-medium text-gray-700">Title</label>
@@ -52,11 +47,16 @@ export default function EditForm({
         <div className="flex justify-end">
           <button
             type="submit"
-            className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
+            className="bg-mypurple text-white px-4 py-2 rounded"
           >
             Update Post
           </button>
         </div>
+        {error && (
+          <div className="bg-red-100 border border-red-400 text-red-700 text-center px-4 py-2 mt-10 rounded mb-4">
+            {error}
+          </div>
+        )}
       </form>
     </div>
   );

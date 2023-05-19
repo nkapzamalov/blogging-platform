@@ -31,7 +31,7 @@ Follow these steps to set up and run the project:
 5. Ensure that you have MySQL installed locally. If not, download and install MySQL from [https://dev.mysql.com/downloads/].
 6. Create a new MySQL database for your project.
 7. Update the `DATABASE_URL` environment variable in your `.env` file with the appropriate MySQL connection details (e.g., host, port, username, password, and database name).
-8. Run the database migrations to create the required database tables. Execute the following command:npx prisma db push
+8. Run the database migrations to create the required database tables. Execute the following command:npx prisma migrate dev
 9. Start the development server using the following command:yarn dev
 
 ## Seeding Dummy Data

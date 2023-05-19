@@ -25,7 +25,7 @@ export async function getServerSideProps() {
   initialPosts = JSON.parse(JSON.stringify(initialPosts))
 
   const lastPostInResults = initialPosts[take - 1]
-  const initialCursor = lastPostInResults.id
+  const initialCursor = initialPosts.length > 0 ? lastPostInResults.id : null
 
   return {
     props: {
